@@ -1,73 +1,96 @@
 /*
-Câu 4: 
-3.	Viết chương trình thực hiện các yêu cầu sau:
-1.	Khai báo lớp time với các thuộc tính: giờ, phút, giây.
-Xây dựng hàm tạo không đối, hàm tạo có đối, hàm hủy một đối tượng time.
-2.	Xây dựng các phương thức: nhập, xuất, chuẩn hóa một đối tượng time.
-3.	Định nghĩa toán từ ++,-- để tăng, giảm một giây. Thực hiện tăng, giảm một giây và in kết quả ra màn hình (kết quả phải được chuẩn hóa dưới định dạng 24 tiếng hh:mm:ss).
- 
+    Câu 4: 
+        3.	Viết chương trình thực hiện các yêu cầu sau:
+            1.	Khai báo lớp time với các thuộc tính: giờ, phút, giây.
+            Xây dựng hàm tạo không đối, hàm tạo có đối, hàm hủy một đối tượng time.
+            2.	Xây dựng các phương thức: nhập, xuất, chuẩn hóa một đối tượng time.
+            3.	Định nghĩa toán từ ++,-- để tăng, giảm một giây. Thực hiện tăng, 
+            giảm một giây và in kết quả ra màn hình (kết quả phải được chuẩn hóa 
+            dưới định dạng 24 tiếng hh:mm:ss).
+            
 */
 
 #include"bits/stdc++.h"
 
 using namespace std;
 
-class thistime{
+class thoigian{
     private:
-    int sec;
-    int minute;
-    int hour;
+    int hour , minutes, sec;
 
     public:
-    thistime(){};
-    thistime(int hour, int ninute, int sec) : hour(hour) , minute(minute), sec(sec){};
-    ~thistime(){};
+    thoigian (){};
+    thoigian (int hour , int minutes, int sec) : hour(hour) , minutes(minutes) , sec(sec) {};
+    ~thoigian(){};
 
-    friend istream &operator >> (istream &is, thistime &t){
-        cout << "nhap gio : "; is >> t.hour;
-        cout << "nhap phut : "; is >> t.minute;
-        cout << "nhap vao giay : "; is >> t.sec;
+    friend istream &operator >> (istream &is, thoigian &tm);
+    friend ostream &operator << (ostream &os, thoigian );
 
-        return is;
+    thoigian operator ++ (){
+
+        sec ++;
+        while(sec >= 60){
+            minutes ++;
+            sec -= 60;
+        }
+        while(minutes >= 60){
+            hour ++;
+            minutes -= 60;
+        }
+        while(hour >= 24){
+            hour -= 24;
+        }
+ 
+    return thoigian(hour,minutes,sec);
     }
+        thoigian operator -- (){
 
-    friend ostream &operator << (ostream &os, thistime t){
-        if(t.sec == 60){
-                t.sec = 0;
-            if(t.minute == 60){
-                t.minute = 0;
-            if(t.hour == 24){
-                t.hour = 0;
-            }
-            t.hour ++;
-        }
-            t.minute ++;
-        }
-
-        if(t.minute == 60){
-                t.minute = 0;
-            if(t.hour == 24){
-                t.hour = 0;
-            }
-            t.hour ++;
-        }
-
-        if(t.hour == 24){
-                t.hour = 0;
-            }
-        
-     
-            cout << t.hour <<":"<< t.minute <<":"<<t.sec;
-
-        return os;
-    }
+        sec -2;
+        while(sec = 0){
+            sec = 59;
+            minutes = 59;
+            if(hour == 0){
+                hour = 23;
+            }else
+                hour --;
     
+        }
+    return thoigian(hour,minutes,sec);
+    }
+};
 
+
+    istream &operator >> (istream &is, thoigian &tm){
+        cin >> tm.hour >> tm.minutes >> tm.sec ;
+    }
+
+    ostream &operator << (ostream &os, thoigian tm){
+
+        while(tm.sec >= 60){
+            tm.minutes ++;
+            tm.sec -= 60;
+        }
+        while(tm.minutes >= 60){
+            tm.hour ++;
+            tm.minutes -= 60;
+        }
+        while(tm.hour >= 24){
+            tm.hour -= 24;
+        }
+
+        cout << tm.hour << ":" << tm.minutes << ":" << tm.sec;
+    }
 
 int main(){
-    thistime tm;
+    thoigian times;
 
-    cin >> tm;
-    cout << tm;
+    cout << "nhap vao gio , phut , giay: ";
+    cin >> times;
 
+    cout << times << endl;
+
+    cout <<"tang 1 sec : "<< endl;
+    cout << ++ times << endl;
+    cout <<"giam 1 sec : "<< endl;
+    cout << -- times << endl;
 }
